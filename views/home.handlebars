@@ -1,0 +1,72 @@
+<div class="flex flex-col items-center my-12 bg-gray-900 py-8 px-4 rounded-xl bg-gray-950">
+    <h1 class="text-4xl font-bold text-white mb-8">Flashcards</h1>
+    {{#unless flashcards.length}}
+    <h1 class="text-gray-400 text-xl">No Flashcards are available</h1>
+    {{/unless}}
+    <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-w-screen-lg mx-auto">
+        {{#each flashcards}}
+        <div class="bg-gray-800 shadow-md rounded-lg p-6 border border-gray-700">
+            <div class="mb-6 flex flex-col">
+                <p class="text-lg text-white font-semibold text-teal-300">Question:</p>
+                <p class="mb-4 text-gray-300">{{question}}</p>
+                <button class="toggle-answer-btn bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 max-w-300 self-center">
+                    Show Answer
+                </button>
+                <div class="answer mt-2 text-gray-300" style="display: none;">
+                    <p><span class="font-semibold">Answer:</span> {{answer}}</p>
+                </div>
+            </div>
+            <!-- Edit form (hidden by default) -->
+            <form id="edit-form-{{id}}" action="/cards/{{id}}?_method=PUT" method="POST" class="mb-4 hidden">
+                <input type="text" name="ques" placeholder="New Question" class="border rounded px-3 py-2 mb-2 w-full bg-gray-700 text-gray-200" required>
+                <input type="text" name="ans" placeholder="New Answer" class="border rounded px-3 py-2 mb-2 w-full bg-gray-700 text-gray-200" required>
+                <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Save</button>
+            </form>
+
+            <div class="flex gap-4 mt-8">
+                <!-- Edit and Delete buttons -->
+                <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 edit-btn"
+                    onclick="toggleEditForm({{id}})">&#9998; Edit</button>
+                <!-- Delete form -->
+                <form action="/cards/{{id}}?_method=DELETE" method="POST">
+                    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">&#10007; Delete</button>
+                </form>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+
+<!-- Add a new flashcard -->
+<div class="flex flex-col items-center my-12 bg-gray-900 py-8 px-4 rounded-xl">
+    <h2 class="text-3xl font-semibold text-white mt-8 mb-4">Add Flashcard</h2>
+    <form action="/cards" method="POST" class="bg-gray-800 shadow-md rounded-lg p-6 border border-gray-700">
+        <input type="text" name="ques" placeholder="Question" class="border rounded px-3 py-2 mb-2 w-full bg-gray-700 text-gray-200" required>
+        <input type="text" name="ans" placeholder="Answer" class="border rounded px-3 py-2 mb-2 w-full bg-gray-700 text-gray-200" required>
+        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Add</button>
+    </form>
+</div>
+
+<!-- JavaScript to handle the answer toggle -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const buttons = document.querySelectorAll('.toggle-answer-btn');
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const answerDiv = button.nextElementSibling;
+                if (answerDiv.style.display === 'none') {
+                    answerDiv.style.display = 'block';
+                    button.textContent = 'Hide Answer';
+                } else {
+                    answerDiv.style.display = 'none';
+                    button.textContent = 'Show Answer';
+                }
+            });
+        });
+    });
+
+    function toggleEditForm(cardId) {
+        const form = document.getElementById(`edit-form-${cardId}`);
+        form.classList.toggle('hidden'); // This will show or hide the form
+    }
+</script>
