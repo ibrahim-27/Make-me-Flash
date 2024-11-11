@@ -16,22 +16,23 @@
                     <p><span class="font-semibold">Answer:</span> {{answer}}</p>
                 </div>
             </div>
-            <!-- Edit form (hidden by default) -->
-            <form id="edit-form-{{id}}" action="/cards/{{id}}?_method=PUT" method="POST" class="mb-4 hidden">
-                <input type="text" name="ques" placeholder="New Question" class="border rounded px-3 py-2 mb-2 w-full bg-gray-700 text-gray-200" required>
-                <input type="text" name="ans" placeholder="New Answer" class="border rounded px-3 py-2 mb-2 w-full bg-gray-700 text-gray-200" required>
-                <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Save</button>
-            </form>
 
+            <!-- Edit and Delete buttons -->
             <div class="flex gap-4 mt-8">
-                <!-- Edit and Delete buttons -->
-                <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 edit-btn"
-                    onclick="toggleEditForm({{id}})">&#9998; Edit</button>
-                <!-- Delete form -->
-                <form action="/cards/{{id}}?_method=DELETE" method="POST">
-                    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">&#10007; Delete</button>
-                </form>
+                <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 edit-btn" onclick="toggleEditForm({{id}})">
+                    &#9998; Edit
+                </button>
+                <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700" onclick="deleteFlashcard({{id}})">
+                    &#10007; Delete
+                </button>
             </div>
+
+            <!-- Edit form (hidden by default) -->
+            <form id="edit-form-{{id}}" class="my-4 hidden" onsubmit="event.preventDefault(); updateFlashcard({{id}});">
+                <input type="text" id="edit-ques-{{id}}" placeholder="New Question" class="border rounded px-3 py-2 mb-2 w-full bg-gray-700 text-gray-200" required>
+                <input type="text" id="edit-ans-{{id}}" placeholder="New Answer" class="border rounded px-3 py-2 mb-2 w-full bg-gray-700 text-gray-200" required>
+                <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Save</button>
+            </form>
         </div>
         {{/each}}
     </div>
@@ -47,7 +48,7 @@
     </form>
 </div>
 
-<!-- JavaScript to handle the answer toggle -->
+<!-- JavaScript to handle answer toggle and fetch requests -->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const buttons = document.querySelectorAll('.toggle-answer-btn');
@@ -67,6 +68,51 @@
 
     function toggleEditForm(cardId) {
         const form = document.getElementById(`edit-form-${cardId}`);
-        form.classList.toggle('hidden'); // This will show or hide the form
+        form.classList.toggle('hidden');
     }
+
+    async function deleteFlashcard(cardId) {
+    try {
+        const response = await fetch(`/cards/${cardId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            alert('Flashcard deleted successfully!');
+            window.location.reload(); 
+        } else {
+            alert('Failed to delete flashcard.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+async function updateFlashcard(cardId) {
+    const question = document.getElementById(`edit-ques-${cardId}`).value;
+    const answer = document.getElementById(`edit-ans-${cardId}`).value;
+
+    try {
+        const response = await fetch(`/cards/${cardId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ ques: question, ans: answer })
+        });
+
+        if (response.ok) {
+            alert('Flashcard updated successfully!');
+            window.location.reload(); 
+        } else {
+            alert('Failed to update flashcard.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
 </script>
