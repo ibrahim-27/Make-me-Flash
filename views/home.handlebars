@@ -1,7 +1,8 @@
-<div class="flex flex-col items-center my-12 bg-gray-900 py-8 px-4 rounded-xl bg-gray-950">
-    <h1 class="text-4xl font-bold text-white mb-8">Flashcards</h1>
+<div class="flex flex-col items-center my-6 bg-gray-900 py-8 px-4 rounded-xl bg-gray-950">
+    <h1 class="text-4xl font-bold text-white">Flashcards</h1>
+    <hr class="w-3/4 h-1/2 bg-gray-900 my-6">
     {{#unless flashcards.length}}
-    <h1 class="text-gray-400 text-xl">No Flashcards are available</h1>
+    <h1 class="text-gray-400 text-xl my-4">No Flashcards are available</h1>
     {{/unless}}
     <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-w-screen-lg mx-auto">
         {{#each flashcards}}
@@ -39,80 +40,25 @@
 </div>
 
 <!-- Add a new flashcard -->
-<div class="flex flex-col items-center my-12 bg-gray-900 py-8 px-4 rounded-xl">
+<div class="flex flex-col items-center my-4 bg-gray-900 py-8 px-4 rounded-xl">
     <h2 class="text-3xl font-semibold text-white mt-8 mb-4">Add Flashcard</h2>
     <form action="/cards" method="POST" class="bg-gray-800 shadow-md rounded-lg p-6 border border-gray-700">
         <input type="text" name="ques" placeholder="Question" class="border rounded px-3 py-2 mb-2 w-full bg-gray-700 text-gray-200" required>
         <input type="text" name="ans" placeholder="Answer" class="border rounded px-3 py-2 mb-2 w-full bg-gray-700 text-gray-200" required>
-        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Add</button>
+        <button type="submit" class="bg-green-600 text-white mt-2 px-4 py-2 rounded hover:bg-green-700">Add</button>
     </form>
 </div>
 
+<!-- AI to add new flashcards -->
+<div class="flex flex-col items-center my-4 bg-gray-900 py-8 px-4 rounded-xl">
+    <h2 class="text-3xl font-semibold text-white mt-8 mb-4">Use AI to add Flashcards</h2>
+    <form id="ai-form" class="flex gap-4 bg-gray-800 shadow-md rounded-lg p-6 border border-gray-700 w-1/2" onsubmit="event.preventDefault(); handleAIFormSubmission();">
+        <input type="text" id="ai-prompt" name="prompt" placeholder="Add your article/content" class="border rounded px-3 py-2 w-full bg-gray-700 text-gray-200" required>
+        <button type="submit" class="bg-green-600 text-white px-4 rounded hover:bg-green-700">Send</button>
+    </form>
+    <!-- Error message container -->
+    <div id="error-message" class="text-red-500 mt-4 hidden"></div>
+</div>
+
 <!-- JavaScript to handle answer toggle and fetch requests -->
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const buttons = document.querySelectorAll('.toggle-answer-btn');
-        buttons.forEach(button => {
-            button.addEventListener('click', () => {
-                const answerDiv = button.nextElementSibling;
-                if (answerDiv.style.display === 'none') {
-                    answerDiv.style.display = 'block';
-                    button.textContent = 'Hide Answer';
-                } else {
-                    answerDiv.style.display = 'none';
-                    button.textContent = 'Show Answer';
-                }
-            });
-        });
-    });
-
-    function toggleEditForm(cardId) {
-        const form = document.getElementById(`edit-form-${cardId}`);
-        form.classList.toggle('hidden');
-    }
-
-    async function deleteFlashcard(cardId) {
-    try {
-        const response = await fetch(`/cards/${cardId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (response.ok) {
-            alert('Flashcard deleted successfully!');
-            window.location.reload(); 
-        } else {
-            alert('Failed to delete flashcard.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
-async function updateFlashcard(cardId) {
-    const question = document.getElementById(`edit-ques-${cardId}`).value;
-    const answer = document.getElementById(`edit-ans-${cardId}`).value;
-
-    try {
-        const response = await fetch(`/cards/${cardId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ ques: question, ans: answer })
-        });
-
-        if (response.ok) {
-            alert('Flashcard updated successfully!');
-            window.location.reload(); 
-        } else {
-            alert('Failed to update flashcard.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
-</script>
+<script src="/script.js"></script>

@@ -40,7 +40,7 @@ router.put("/:id", (req, res) => {
     const {ques, ans} = req.body;
     db.query('UPDATE flashcards SET question = ?, answer = ? WHERE id = ?', [ques, ans, id], (err, results) => {
         if(!err)
-            return res.status(200).json({ message: 'Flashcard updated successfully' });
+            return res.status(200).json({ message: 'Flashcard deleted successfully' });
 
         console.error(err);
         res.status(500).send(err);
