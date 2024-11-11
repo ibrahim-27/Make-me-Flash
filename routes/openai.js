@@ -12,7 +12,8 @@ const client = new AzureOpenAI({
   endpoint: process.env.OPENAI_ENDPOINT,
   deployment: process.env.OPENAI_DEPLOYMENT,
 });
-const systemMessage = {
+
+const system_message = {
   role: "system",
   content: `You are a study assistant who processes text content related to any academic or study-related material. 
   You will extract key points from the given paragraphs and generate flashcard questions and answers. Try to make questions with single line answers, preferably 3-4 words
@@ -44,12 +45,12 @@ const systemMessage = {
 router.post("/prompt", async (req, res) => {
   const prompt = req.body.prompt;
   try {
-    const chatCompletion = await client.chat.completions.create({
-      messages: [systemMessage, { role: "user", content: prompt }],
+    const chat_completion = await client.chat.completions.create({
+      messages: [system_message, { role: "user", content: prompt }],
       response_format: {type: "json_object"}
     });
 
-    const result = JSON.parse(chatCompletion.choices[0].message.content);
+    const result = JSON.parse(chat_completion.choices[0].message.content);
 
     if(result.error) {
         return res.json(result);
@@ -75,6 +76,5 @@ function insert_into_db(flashcards) {
       });
     });
   }
-
 
 export default router;

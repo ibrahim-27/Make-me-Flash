@@ -20,16 +20,16 @@
 
             <!-- Edit and Delete buttons -->
             <div class="flex gap-4 mt-8">
-                <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 edit-btn" onclick="toggleEditForm({{id}})">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 edit-btn" onclick="toggle_edit_form({{id}})">
                     &#9998; Edit
                 </button>
-                <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700" onclick="deleteFlashcard({{id}})">
+                <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700" onclick="delete_flashcard({{id}})">
                     &#10007; Delete
                 </button>
             </div>
 
             <!-- Edit form (hidden by default) -->
-            <form id="edit-form-{{id}}" class="my-4 hidden" onsubmit="event.preventDefault(); updateFlashcard({{id}});">
+            <form id="edit-form-{{id}}" class="my-4 hidden" onsubmit="event.preventDefault(); update_flashcard({{id}});">
                 <input type="text" id="edit-ques-{{id}}" placeholder="New Question" class="border rounded px-3 py-2 mb-2 w-full bg-gray-700 text-gray-200" required>
                 <input type="text" id="edit-ans-{{id}}" placeholder="New Answer" class="border rounded px-3 py-2 mb-2 w-full bg-gray-700 text-gray-200" required>
                 <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Save</button>
@@ -52,7 +52,7 @@
 <!-- AI to add new flashcards -->
 <div class="flex flex-col items-center my-4 bg-gray-900 py-8 px-4 rounded-xl">
     <h2 class="text-3xl font-semibold text-white mt-8 mb-4">Use AI to add Flashcards</h2>
-    <form id="ai-form" class="flex gap-4 bg-gray-800 shadow-md rounded-lg p-6 border border-gray-700 w-1/2" onsubmit="event.preventDefault(); handleAIFormSubmission();">
+    <form id="ai-form" class="flex gap-4 bg-gray-800 shadow-md rounded-lg p-6 border border-gray-700 w-1/2" onsubmit="event.preventDefault(); handle_ai_form();">
         <input type="text" id="ai-prompt" name="prompt" placeholder="Add your article/content" class="border rounded px-3 py-2 w-full bg-gray-700 text-gray-200" required>
         <button type="submit" class="bg-green-600 text-white px-4 rounded hover:bg-green-700">Send</button>
     </form>

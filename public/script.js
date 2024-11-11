@@ -16,12 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-function toggleEditForm(cardId) {
+function toggle_edit_form(cardId) {
     const form = document.getElementById(`edit-form-${cardId}`);
     form.classList.toggle('hidden');
 }
 
-async function deleteFlashcard(cardId) {
+async function delete_flashcard(cardId) {
 try {
     const response = await fetch(`/cards/${cardId}`, {
         method: 'DELETE',
@@ -41,7 +41,7 @@ try {
 }
 }
 
-async function updateFlashcard(cardId) {
+async function update_flashcard(cardId) {
 const question = document.getElementById(`edit-ques-${cardId}`).value;
 const answer = document.getElementById(`edit-ans-${cardId}`).value;
 
@@ -65,9 +65,9 @@ try {
 }
 }
 
-async function handleAIFormSubmission() {
+async function handle_ai_form() {
     const prompt = document.getElementById('ai-prompt').value;
-    const errorMessageContainer = document.getElementById('error-message');
+    const error_msg_div = document.getElementById('error-message');
 
     try {
         const response = await fetch('/ai/prompt', {
@@ -82,15 +82,15 @@ async function handleAIFormSubmission() {
 
         // Handle errors if they exist in the response
         if (result.error) {
-            errorMessageContainer.textContent = result.error;
-            errorMessageContainer.classList.remove('hidden');
+            error_msg_div.textContent = result.error;
+            error_msg_div.classList.remove('hidden');
         } else {
-            errorMessageContainer.classList.add('hidden');
+            error_msg_div.classList.add('hidden');
             window.location.href = '/cards'; 
         }
     } catch (error) {
         console.error('Error:', error);
-        errorMessageContainer.textContent = 'An unexpected error occurred. Please try again.';
-        errorMessageContainer.classList.remove('hidden');
+        error_msg_div.textContent = 'An unexpected error occurred. Please try again.';
+        error_msg_div.classList.remove('hidden');
     }
 }
