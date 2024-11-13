@@ -9,20 +9,9 @@ router.get("/", (req, res) => {
             return res.render('home', { flashcards: results });
 
         console.error(err);
-        res.status(500).send('Error connecting to MySQL database');
+        res.status(500).send('Error fetching flashcards from database');
       });
 });
-
-router.get("/:id", (req, res) => {
-    const id = parseInt(req.params.id);
-
-    db.query(`SELECT * FROM flashcards WHERE id = ?`, [id], (err, results) => {
-        if(!err)
-            return res.json(results);
-        console.error(err);
-        res.status(500).send('Error connecting to MySQL database');
-    });
-})
 
 router.post("/", (req, res) => {
     const {ques, ans} = req.body;
@@ -40,7 +29,7 @@ router.put("/:id", (req, res) => {
     const {ques, ans} = req.body;
     db.query('UPDATE flashcards SET question = ?, answer = ? WHERE id = ?', [ques, ans, id], (err, results) => {
         if(!err)
-            return res.status(200).json({ message: 'Flashcard deleted successfully' });
+            return res.status(200).json({ message: 'Flashcard updated successfully' });
 
         console.error(err);
         res.status(500).send(err);
@@ -54,7 +43,7 @@ router.delete("/:id", (req, res) => {
             return res.status(200).json({ message: 'Flashcard deleted successfully' });
 
         console.error(err);
-        res.status(500).send('Error deleting flashcards');
+        res.status(500).send(err);
       });
 })
 

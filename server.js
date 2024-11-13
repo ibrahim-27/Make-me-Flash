@@ -4,7 +4,7 @@ import flashcard_router from './routes/flashcards.js';
 import openai_router from './routes/openai.js';
 
 const app = express();
-const port = 3000;
+const port = 3001;
 
 app.engine('handlebars', engine());
 

@@ -1,10 +1,10 @@
 <div class="flex flex-col items-center my-6 bg-gray-900 py-8 px-4 rounded-xl bg-gray-950">
-    <h1 class="text-4xl font-bold text-white">Flashcards</h1>
+    <h1 class="text-4xl font-bold text-white">My Flashcards</h1>
     <hr class="w-3/4 h-1/2 bg-gray-900 my-6">
-    {{#unless flashcards.length}}
+    {{#unless flashcards.length}}   
     <h1 class="text-gray-400 text-xl my-4">No Flashcards are available</h1>
     {{/unless}}
-    <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-w-screen-lg mx-auto">
+    <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-3/4 mx-auto">
         {{#each flashcards}}
         <div class="bg-gray-800 shadow-md rounded-lg p-6 border border-gray-700">
             <div class="mb-6 flex flex-col">
@@ -53,8 +53,8 @@
 <div class="flex flex-col items-center my-4 bg-gray-900 py-8 px-4 rounded-xl">
     <h2 class="text-3xl font-semibold text-white mt-8 mb-4">Use AI to add Flashcards</h2>
     <form id="ai-form" class="flex gap-4 bg-gray-800 shadow-md rounded-lg p-6 border border-gray-700 w-1/2" onsubmit="event.preventDefault(); handle_ai_form();">
-        <input type="text" id="ai-prompt" name="prompt" placeholder="Add your article/content" class="border rounded px-3 py-2 w-full bg-gray-700 text-gray-200" required>
-        <button type="submit" class="bg-green-600 text-white px-4 rounded hover:bg-green-700">Send</button>
+        <textarea type="text" id="ai-prompt" name="prompt" placeholder="Add your article/content e.g. Make 5 flashcards from the text..." class="border rounded px-3 py-2 w-full bg-gray-700 text-gray-200 overflow-hidden resize-none" required></textarea>
+        <button type="submit" class="bg-green-600 text-white px-4 rounded hover:bg-green-700">Add</button>
     </form>
     <!-- Error message container -->
     <div id="error-message" class="text-red-500 mt-4 hidden"></div>
